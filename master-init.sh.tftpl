@@ -14,10 +14,12 @@ kubeadm init \
   --apiserver-advertise-address="$PRIVATE_IP" \
   --apiserver-cert-extra-sans="$PUBLIC_IP"
 
-# kubeconfig for the ubuntu user (so `kubectl` works after SSH)
+# kubeconfig for the ubuntu user (so `kubectl` works after SSH).
+# chown the whole ~/.kube DIR, not just the file — otherwise the dir stays
+# root-owned and `kubectl config set-*` (Workshop 3) can't create config.lock.
 mkdir -p /home/ubuntu/.kube
 cp /etc/kubernetes/admin.conf /home/ubuntu/.kube/config
-chown ubuntu:ubuntu /home/ubuntu/.kube/config
+chown -R ubuntu:ubuntu /home/ubuntu/.kube
 
 export KUBECONFIG=/etc/kubernetes/admin.conf
 
