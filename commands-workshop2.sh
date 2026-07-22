@@ -23,6 +23,8 @@ kubectl apply -f ~/week12/workshop2/kubectl-proxy-pod.yaml -n week12-2
 ########################################################
 # Before the Role: listing services is denied
 kubectl exec -it test -c main -n week12-1 -- sh -c 'curl -s localhost:8001/api/v1/namespaces/week12-1/services'
+# The 403 Forbidden for system:serviceaccount:week12-1:clo835 is expected — the SA has no permissions yet.
+
 
 kubectl apply -f ~/week12/workshop2/service-reader.yaml -n week12-1
 kubectl create rolebinding test --role=service-reader --serviceaccount=week12-1:clo835 -n week12-1
@@ -54,6 +56,9 @@ kubectl exec -it test -c main -n week12-1 -- sh -c 'curl -s localhost:8001/api/v
 kubectl get clusterrole system:discovery -o yaml
 kubectl get clusterrolebinding system:discovery -o yaml
 
+#  kubectl get --raw /api
+#  kubectl get --raw /version
+#  kubectl get --raw /healthz
 ########################################################
 # Cleanup (Workshop 2) + kubeadm teardown when done
 ########################################################

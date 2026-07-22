@@ -20,7 +20,11 @@ cd ~/week12/workshop3
 #    CN = the Kubernetes username (Kubernetes has no "User" object)
 ########################################################
 openssl genrsa -out clo835-user.key 2048
+ls
+# clo835-role-binding.yaml  clo835-role.yaml  clo835-user.key
 openssl req -new -key clo835-user.key -out clo835-user.csr -subj "/CN=clo835-user"
+ls
+# clo835-role-binding.yaml  clo835-role.yaml  clo835-user.csr  clo835-user.key
 
 ########################################################
 # 2) Submit the CSR to Kubernetes and approve it (as cluster admin)
@@ -38,15 +42,16 @@ spec:
     - client auth
 EOF
 
-kubectl certificate approve clo835-user
+kubectl certificate approve clo835-user #  cluster admin approved the user's certificate
 # Fetch the signed certificate the API server issued
+
+# saves the signed certificat as clo835-user.crt
 kubectl get csr clo835-user -o jsonpath='{.status.certificate}' | base64 -d > clo835-user.crt
 
 ########################################################
 # 3) Build a kubeconfig context for the user (embeds their cert + key)
 ########################################################
-kubectl config set-credentials clo835-user \
-    --client-key=clo835-user.key --client-certificate=clo835-user.crt --embed-certs=true
+kubectl config set-credentials clo835-user --client-key=clo835-user.key --client-certificate=clo835-user.crt --embed-certs=true
 kubectl config set-context clo835-user --cluster=kubernetes --user=clo835-user
 
 ########################################################
