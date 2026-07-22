@@ -58,7 +58,7 @@ kubectl get clusterrolebinding system:discovery -o yaml
 
 #  kubectl get --raw /api
 #  kubectl get --raw /version
-#  kubectl get --raw /healthz
+#  kubectl get --raw /healthz && echo
 ########################################################
 # Cleanup (Workshop 2) + kubeadm teardown when done
 ########################################################
