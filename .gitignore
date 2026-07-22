@@ -12,5 +12,11 @@ crash.log
 *.ppk
 credentials
 
+# Workshop 3 — generated client-cert artifacts (created on the master at runtime)
+*.key
+*.crt
+*.csr
+clo835_creds.sh
+
 # OS
 .DS_Store
