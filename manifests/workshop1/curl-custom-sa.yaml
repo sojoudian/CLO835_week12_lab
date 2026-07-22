@@ -1,0 +1,16 @@
+# Workshop 1 — the "ambassador" pattern: a kubectl-proxy sidecar handles auth,
+# so the "main" container can just curl localhost:8001 with no token juggling.
+# Both containers run under the clo835 ServiceAccount and share localhost.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl-custom-sa
+spec:
+  serviceAccountName: clo835
+  containers:
+    - name: main
+      image: curlimages/curl:latest
+      command: ["sleep", "infinity"]
+    - name: ambassador
+      image: bitnami/kubectl:latest
+      command: ["kubectl", "proxy", "--port=8001"]

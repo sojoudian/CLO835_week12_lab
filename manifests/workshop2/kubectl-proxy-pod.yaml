@@ -1,0 +1,16 @@
+# Workshop 2 — a "test" pod used to probe the API as the clo835 ServiceAccount.
+# main:  curl (exec target); proxy: kubectl proxy on :8001 authenticated as clo835.
+# Apply the SAME file into each namespace (week12-1, week12-2) with -n.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test
+spec:
+  serviceAccountName: clo835
+  containers:
+    - name: main
+      image: curlimages/curl:latest
+      command: ["sleep", "infinity"]
+    - name: proxy
+      image: bitnami/kubectl:latest
+      command: ["kubectl", "proxy", "--port=8001"]

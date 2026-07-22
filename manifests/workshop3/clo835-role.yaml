@@ -1,0 +1,15 @@
+# Workshop 3 — Role: list/get/watch pods and deployments in rbac-test only.
+# This is the AUTHORIZATION half; the client certificate (CN=clo835-user) is
+# the AUTHENTICATION half.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+  namespace: rbac-test
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch"]

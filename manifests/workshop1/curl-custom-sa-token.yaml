@@ -1,0 +1,13 @@
+# Workshop 1 — a pod that runs under the clo835 ServiceAccount.
+# Its token is auto-mounted at /var/run/secrets/kubernetes.io/serviceaccount/.
+# Exec into the "main" container and curl the API with that token.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl-custom-sa-token
+spec:
+  serviceAccountName: clo835
+  containers:
+    - name: main
+      image: curlimages/curl:latest
+      command: ["sleep", "infinity"]

@@ -1,0 +1,16 @@
+# Workshop 3 — RoleBinding: bind the pod-reader Role to the USER clo835-user.
+# The user is authenticated by an X509 client certificate whose CN is
+# "clo835-user" (Kubernetes has no User object — the name comes from the cert).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+  namespace: rbac-test
+subjects:
+  - kind: User
+    name: clo835-user
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
