@@ -1,0 +1,11 @@
+# Workshop 1 — on Kubernetes 1.24+ a ServiceAccount no longer auto-creates a
+# token Secret. Create one explicitly (typed + annotated) so the token
+# controller populates a long-lived JWT we can read and decode.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: clo835-token
+  namespace: week12
+  annotations:
+    kubernetes.io/service-account.name: clo835
+type: kubernetes.io/service-account-token

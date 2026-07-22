@@ -7,7 +7,7 @@
 # 0) Verify the cluster
 ########################################################
 kubectl get nodes -o wide            # masternode + workernode1 + workernode2, all Ready
-ls ~/week12/workshop1                # curl-custom-sa-token.yaml  curl-custom-sa.yaml
+ls ~/week12/workshop1                # clo835-token.yaml  curl-custom-sa-token.yaml  curl-custom-sa.yaml
 
 ########################################################
 # 1) Create the ServiceAccount and read its token
@@ -15,9 +15,14 @@ ls ~/week12/workshop1                # curl-custom-sa-token.yaml  curl-custom-sa
 kubectl create ns week12
 kubectl create serviceaccount clo835 -n week12
 kubectl describe sa clo835 -n week12
-# A token Secret is auto-created; describe it, then decode the token at https://jwt.io/
-kubectl describe secret $(kubectl get sa clo835 -n week12 -o jsonpath='{.secrets[0].name}') -n week12
+# On Kubernetes 1.24+ a ServiceAccount no longer auto-creates a token Secret
+# (Tokens: <none> above). Create one explicitly so we can read & decode its JWT:
+kubectl apply -f ~/week12/workshop1/clo835-token.yaml
+kubectl describe secret clo835-token -n week12
+# Copy the "token:" value and decode it at https://jwt.io/
 #   PAYLOAD "sub": "system:serviceaccount:week12:clo835"   <- the SA identity
+#
+# (Alternatively, a short-lived token without a Secret:  kubectl create token clo835 -n week12)
 
 ########################################################
 # 2) Pod under the clo835 SA — curl the API with the mounted token
